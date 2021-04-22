@@ -1,24 +1,24 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
+const alpha = require('alphavantage')({ key: ' UEWYWI7DJJMYPQK1' });
 
 function App() {
   useEffect(() => {
-    const API_KEY = ' UEWYWI7DJJMYPQK1';
-    let StockSymbol = 'FB';
+    // const API_KEY = ' UEWYWI7DJJMYPQK1';
     // prettier-ignore
-    let API_Call = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${StockSymbol}&outputsize=compact&apikey=${API_KEY}`;
 
-    axios.get(API_Call).then((data) => {
-      console.log(data);
-      let array = Object.entries(data);
-      let result = array[1][1];
-      let x = [];
-      let y = [];
-      for (let key in result) {
-        x.push(key);
-        y.push(result[key]['1. open']);
-      }
-    });
+    alpha.data.daily(`msft`, `daily`, 60, `close`).then((data) => {
+  let array = Object.entries(data);
+  let result = array[1][1];
+  let x = [];
+  let y = [];
+  for (let key in result) {
+    x.push(key);
+    y.push(result[key]['1. open']);
+  }
+  console.log(x);
+  console.log(y);
+  });
   }, []);
 
   return (
