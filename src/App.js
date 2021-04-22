@@ -1,10 +1,10 @@
 import './App.css';
-import Stock from './Stock';
+import Graph from './components/Graph';
 
 function App() {
   return (
     <div className='App'>
-      <Stock></Stock>
+      <Graph></Graph>
     </div>
   );
 }

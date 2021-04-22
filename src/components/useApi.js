@@ -2,31 +2,37 @@ import { useState, useEffect } from 'react';
 // import axios from 'axios';
 const alpha = require('alphavantage')({ key: ' UEWYWI7DJJMYPQK1' });
 
-function App() {
+function useApi() {
+  const [xAxis, setxAxis] = useState([]);
+  const [yAxis, setyAxis] = useState([]);
+
   useEffect(() => {
     // const API_KEY = ' UEWYWI7DJJMYPQK1';
-    // prettier-ignore
 
-    alpha.data.daily(`msft`, `daily`, 60, `close`).then((data) => {
-  let array = Object.entries(data);
-  let result = array[1][1];
-  let x = [];
-  let y = [];
-  for (let key in result) {
-    x.push(key);
-    y.push(result[key]['1. open']);
-  }
-  });
+    alpha.data
+      .daily(`msft`, `daily`, 60)
+      .then((data) => {
+        let array = Object.entries(data);
+        let result = array[1][1];
+        let x = [];
+        let y = [];
+
+        for (let key in result) {
+          x.push(key);
+          y.push(result[key]['1. open']);
+        }
+        setxAxis(x);
+        setyAxis(y);
+      })
+      // .catch((error) => {
+      //   setxAxis(error);
+      //   setyAxis(error);
+      // });
   }, []);
-
-  return (
-    <div className='App'>
-      <h2>hello</h2>
-    </div>
-  );
+  return [xAxis, yAxis];
 }
 
-export default App;
+export default useApi;
 
 // const options = {
 //   method: 'GET',
@@ -48,4 +54,3 @@ export default App;
 //   .catch(function (error) {
 //     console.error(error);
 //   });
-
