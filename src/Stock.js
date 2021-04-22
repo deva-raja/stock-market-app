@@ -16,8 +16,6 @@ function App() {
     x.push(key);
     y.push(result[key]['1. open']);
   }
-  console.log(x);
-  console.log(y);
   });
   }, []);
 
@@ -50,3 +48,4 @@ export default App;
 //   .catch(function (error) {
 //     console.error(error);
 //   });
+
