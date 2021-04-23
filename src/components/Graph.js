@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
-import useApi from './useApi';
+import { format } from 'date-fns';
 const alpha = require('alphavantage')({ key: ' UEWYWI7DJJMYPQK1' });
 
 function Graph() {
@@ -9,26 +9,42 @@ function Graph() {
 
   useEffect(() => {
     // const API_KEY = ' UEWYWI7DJJMYPQK1';
-    let symbol = 'FB';
-    alpha.data.daily(`${symbol}`, 10).then((data) => {
-      let array = Object.entries(data);
-      let result = array[1][1];
-      let x = [];
-      let y = [];
 
-      for (let key in result) {
-        x.push(key);
-        y.push(result[key]['1. open']);
-      }
-      let xreverse = x.reverse();
-      let yreverse = y.reverse();
 
-      let datax = xreverse.slice(0, 10);
-      let datay = yreverse.slice(0, 10);
-      console.log();
-      setxAxis(datax);
-      setyAxis(datay);
-    });
+
+    
+    /* 
+ alpha advantage 
+  */
+    // let symbol = 'TATASTLBSL.BSE';
+    // alpha.data
+    //   .daily(`${symbol}`, 10)
+    //   .then((data) => {
+    //     let array = Object.entries(data);
+    //     let result = array[1][1];
+    //     let x = [];
+    //     let y = [];
+    //     for (let key in result) {
+    //       x.push(key);
+    //       y.push(result[key]['1. open']);
+    //     }
+    //     let xreverse = x.reverse();
+    //     let yreverse = y.reverse();
+    //     let datax = xreverse.slice(-15);
+    //     let datay = yreverse.slice(-15);
+    //     let dayMonth = datax.map((element) => {
+    //       let split = element.split('-');
+    //       let date = format(new Date(split[0], split[1] - 1, split[2]), 'PP');
+    //       let ans = date.slice(0, 6);
+    //       return ans;
+    //     });
+    //     setxAxis(dayMonth);
+    //     setyAxis(datay);
+    //   })
+    //   .catch((error) => {
+    //     // setxAxis(datax);
+    //     // setyAxis(datay);
+    //   });
   }, []);
 
   const data = {
@@ -38,8 +54,8 @@ function Graph() {
         label: 'Stock Prices',
         data: yAxis,
         fill: true,
-        backgroundColor: 'rgb(255, 99, 132)',
-        borderColor: 'rgba(255, 99, 132, 0.2)',
+        backgroundColor: '#8ab9c596',
+        borderColor: '#75abeb',
       },
     ],
   };
@@ -47,7 +63,7 @@ function Graph() {
   return (
     <div className='wrapper'>
       <div className='container'>
-        <Line height={400} width={1000} data={data} options={{ maintainAspectRatio: false }} />
+        {/* <Line height={400} width={1000} data={data} options={{ maintainAspectRatio: false }} /> */}
       </div>
     </div>
   );

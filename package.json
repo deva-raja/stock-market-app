@@ -9,6 +9,7 @@
     "@testing-library/user-event": "^12.1.10",
     "alphavantage": "^2.2.0",
     "chart.js": "^3.1.1",
+    "date-fns": "^2.21.1",
     "plotly.js": "^1.58.4",
     "react": "^17.0.2",
     "react-chartjs-2": "^3.0.2",
