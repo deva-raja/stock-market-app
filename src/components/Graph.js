@@ -8,16 +8,18 @@ function Graph() {
   const [xAxis, setxAxis] = useState([]);
   const [yAxis, setyAxis] = useState([]);
   const [company, setCompany] = useState('');
+  const [country, setCountry] = useState('US');
   const [search, setSearch] = useState(false);
-  const [country, setCountry] = useState('');
 
   useEffect(() => {
+    console.log(search);
+    console.log(company);
+    console.log(country);
     // const API_KEY = ' UEWYWI7DJJMYPQK1';
-
     const options = {
       method: 'GET',
       url: 'https://apidojo-yahoo-finance-v1.p.rapidapi.com/auto-complete',
-      params: { q: 'Tata Motors Limited', region: 'IN' },
+      params: { q: company, region: country },
       headers: {
         'x-rapidapi-key': '8db0c26fb2msh347e2ec01c2491bp159ba6jsn118b515b7e11',
         'x-rapidapi-host': 'apidojo-yahoo-finance-v1.p.rapidapi.com',
@@ -28,45 +30,41 @@ function Graph() {
       .request(options)
       .then(function (response) {
         let data = response.data;
-        console.log(data);
-        let symbol = data.quotes[0].symbol;
-        console.log(symbol);
+        let companySymbol = data.quotes[0].symbol;
+
+        // alpha advantage
+        let symbol = companySymbol;
+        alpha.data
+          .daily(`${symbol}`, 10)
+          .then((data) => {
+            let array = Object.entries(data);
+            let result = array[1][1];
+            let x = [];
+            let y = [];
+            for (let key in result) {
+              x.push(key);
+              y.push(result[key]['1. open']);
+            }
+            let xreverse = x.reverse();
+            let yreverse = y.reverse();
+            let datax = xreverse.slice(-15);
+            let datay = yreverse.slice(-15);
+            let dayMonth = datax.map((element) => {
+              let split = element.split('-');
+              let date = format(new Date(split[0], split[1] - 1, split[2]), 'PP');
+              let ans = date.slice(0, 6);
+              return ans;
+            });
+            setxAxis(dayMonth);
+            setyAxis(datay);
+          })
+          .catch((error) => {
+            // setxAxis(datax);
+            // setyAxis(datay);
+          });
       })
       .catch(function (error) {
         console.error(error);
-      });
-
-    /* 
- alpha advantage 
-  */
-    let symbol = 'TATASTLBSL.BSE';
-    alpha.data
-      .daily(`${symbol}`, 10)
-      .then((data) => {
-        let array = Object.entries(data);
-        let result = array[1][1];
-        let x = [];
-        let y = [];
-        for (let key in result) {
-          x.push(key);
-          y.push(result[key]['1. open']);
-        }
-        let xreverse = x.reverse();
-        let yreverse = y.reverse();
-        let datax = xreverse.slice(-15);
-        let datay = yreverse.slice(-15);
-        let dayMonth = datax.map((element) => {
-        let split = element.split('-');
-        let date = format(new Date(split[0], split[1] - 1, split[2]), 'PP');
-        let ans = date.slice(0, 6);
-        return ans;
-      });
-        setxAxis(dayMonth);
-        setyAxis(datay);
-      })
-      .catch((error) => {
-        // setxAxis(datax);
-        // setyAxis(datay);
       });
   }, [search]);
 
@@ -83,20 +81,27 @@ function Graph() {
     ],
   };
 
+  function handleSubmit(e) {
+    e.preventDefault();
+    setSearch((prev) => !prev);
+  }
+
   return (
     <div className='wrapper'>
       <div className='search-form'>
-        <input type='text' value={company} onChange={(e) => setCompany(e.target.value)} />
-        <select name='countries' value={country} onChange={(e)=>setCountry(e.target.value)}>
-          <option value='IN'>India</option>
-          <option value='US'>United States</option>
-        </select>
-        <button value={search} onClick={(e) => setSearch(!e.target.value)}>
-          search
-        </button>
+        <form onSubmit={(e) => handleSubmit(e)}>
+          <input type='text' value={company} onChange={(e) => setCompany(e.target.value)} />
+          <select name='countries' value={country} onChange={(e) => setCountry(e.target.value)}>
+            <option value='IN'>India</option>
+            <option value='US'>United States</option>
+          </select>
+          <button>search</button>
+        </form>
+
+        
       </div>
       <div className='container'>
-        {/* <Line height={400} width={1000} data={data} options={{ maintainAspectRatio: false }} /> */}
+        <Line height={400} width={1000} data={data} options={{ maintainAspectRatio: false }} />
       </div>
     </div>
   );
