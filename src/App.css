@@ -7,3 +7,8 @@
   place-items: center;
   height: 100vh;
 }
+.search-form{
+  display: flex;
+  width: 30%;
+  justify-content: space-between;
+}
