@@ -15,7 +15,8 @@ function Graph() {
     console.log(search);
     console.log(company);
     console.log(country);
-    // const API_KEY = ' UEWYWI7DJJMYPQK1';
+
+    // yahoo api call
     const options = {
       method: 'GET',
       url: 'https://apidojo-yahoo-finance-v1.p.rapidapi.com/auto-complete',
@@ -33,22 +34,26 @@ function Graph() {
         let companySymbol = data.quotes[0].symbol;
 
         // alpha advantage
+        
+        // store x y coordinates
+        let xCoordinate = [];
+        let yCoordinate = [];
+
         alpha.data
           .daily(`${companySymbol}`, 10)
           .then((data) => {
             let array = Object.entries(data);
             let result = array[1][1];
-            let xCoordinate = [];
-            let yCoordinate = [];
             for (let key in result) {
               xCoordinate.push(key);
               yCoordinate.push(result[key]['1. open']);
             }
+            // need to get latest data so reverse
             let xreverse = xCoordinate.reverse();
-            let yreverse = yCoordinate .reverse();
+            let yreverse = yCoordinate.reverse();
             let datax = xreverse.slice(-15);
             let datay = yreverse.slice(-15);
-            
+
             let dayMonth = datax.map((element) => {
               let split = element.split('-');
               let date = format(new Date(split[0], split[1] - 1, split[2]), 'PP');
