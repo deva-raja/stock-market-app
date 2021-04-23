@@ -7,23 +7,10 @@ function Graph() {
   const [xAxis, setxAxis] = useState([]);
   const [yAxis, setyAxis] = useState([]);
 
-  const data = {
-    labels: xAxis,
-    datasets: [
-      {
-        label: '# of Votes',
-        data: yAxis,
-        fill: false,
-        backgroundColor: 'rgb(255, 99, 132)',
-        borderColor: 'rgba(255, 99, 132, 0.2)',
-      },
-    ],
-  };
-  
   useEffect(() => {
     // const API_KEY = ' UEWYWI7DJJMYPQK1';
-
-    alpha.data.daily(`msft`, `daily`, 60).then((data) => {
+    let symbol = 'FB';
+    alpha.data.daily(`${symbol}`, 10).then((data) => {
       let array = Object.entries(data);
       let result = array[1][1];
       let x = [];
@@ -33,21 +20,37 @@ function Graph() {
         x.push(key);
         y.push(result[key]['1. open']);
       }
-      setxAxis(x);
-      setyAxis(y);
+      let xreverse = x.reverse();
+      let yreverse = y.reverse();
+
+      let datax = xreverse.slice(0, 10);
+      let datay = yreverse.slice(0, 10);
+      console.log();
+      setxAxis(datax);
+      setyAxis(datay);
     });
   }, []);
 
+  const data = {
+    labels: xAxis,
+    datasets: [
+      {
+        label: 'Stock Prices',
+        data: yAxis,
+        fill: true,
+        backgroundColor: 'rgb(255, 99, 132)',
+        borderColor: 'rgba(255, 99, 132, 0.2)',
+      },
+    ],
+  };
+
   return (
-    <div>
-      <h2>Line Example</h2>
-      <Line height={400} width={600} data={data} options={options} />
+    <div className='wrapper'>
+      <div className='container'>
+        <Line height={400} width={1000} data={data} options={{ maintainAspectRatio: false }} />
+      </div>
     </div>
   );
 }
-
-const options = {
-  // maintainAspectRatio: true,
-};
 
 export default Graph;

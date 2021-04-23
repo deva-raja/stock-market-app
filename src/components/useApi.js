@@ -1,38 +1,44 @@
-import { useState, useEffect } from 'react';
-// import axios from 'axios';
-const alpha = require('alphavantage')({ key: ' UEWYWI7DJJMYPQK1' });
+// import { useState, useEffect } from 'react';
+// // import axios from 'axios';
+// const alpha = require('alphavantage')({ key: ' UEWYWI7DJJMYPQK1' });
 
-function useApi() {
-  const [xAxis, setxAxis] = useState([]);
-  const [yAxis, setyAxis] = useState([]);
+// function useApi() {
+//   const [xAxis, setxAxis] = useState([]);
+//   const [yAxis, setyAxis] = useState([]);
 
-  useEffect(() => {
-    // const API_KEY = ' UEWYWI7DJJMYPQK1';
+//   useEffect(() => {
+//     // const API_KEY = ' UEWYWI7DJJMYPQK1';
 
-    alpha.data
-      .daily(`msft`, `daily`, 60)
-      .then((data) => {
-        let array = Object.entries(data);
-        let result = array[1][1];
-        let x = [];
-        let y = [];
+//     alpha.data
+//       .daily(`msft`, `daily`, 60)
+//       .then((data) => {
+//         let array = Object.entries(data);
+//         let result = array[1][1];
+//         let x = [];
+//         let y = [];
 
-        for (let key in result) {
-          x.push(key);
-          y.push(result[key]['1. open']);
-        }
-        setxAxis(x);
-        setyAxis(y);
-      })
-      // .catch((error) => {
-      //   setxAxis(error);
-      //   setyAxis(error);
-      // });
-  }, []);
-  return [xAxis, yAxis];
-}
+//         for (let key in result) {
+//           x.push(key);
+//           y.push(result[key]['1. open']);
+//         }
+//         setxAxis(x);
+//         setyAxis(y);
+//       })
+//       // .catch((error) => {
+//       //   setxAxis(error);
+//       //   setyAxis(error);
+//       // });
+//   }, []);
+//   return [xAxis, yAxis];
+// }
 
-export default useApi;
+// export default useApi;
+
+
+// 
+// Split between codes 
+// 
+
 
 // const options = {
 //   method: 'GET',
