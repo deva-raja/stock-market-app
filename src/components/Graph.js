@@ -5,8 +5,8 @@ import axios from 'axios';
 const alpha = require('alphavantage')({ key: ' UEWYWI7DJJMYPQK1' });
 
 function Graph() {
-  const [xAxis, setxAxis] = useState([]);
-  const [yAxis, setyAxis] = useState([]);
+  const [chartXAxis, setchartXAxis] = useState([]);
+  const [chartYAxis, setchartYAxis] = useState([]);
   const [company, setCompany] = useState('');
   const [country, setCountry] = useState('US');
   const [search, setSearch] = useState(false);
@@ -33,30 +33,30 @@ function Graph() {
         let companySymbol = data.quotes[0].symbol;
 
         // alpha advantage
-        let symbol = companySymbol;
         alpha.data
-          .daily(`${symbol}`, 10)
+          .daily(`${companySymbol}`, 10)
           .then((data) => {
             let array = Object.entries(data);
             let result = array[1][1];
-            let x = [];
-            let y = [];
+            let xCoordinate = [];
+            let yCoordinate = [];
             for (let key in result) {
-              x.push(key);
-              y.push(result[key]['1. open']);
+              xCoordinate.push(key);
+              yCoordinate.push(result[key]['1. open']);
             }
-            let xreverse = x.reverse();
-            let yreverse = y.reverse();
+            let xreverse = xCoordinate.reverse();
+            let yreverse = yCoordinate .reverse();
             let datax = xreverse.slice(-15);
             let datay = yreverse.slice(-15);
+            
             let dayMonth = datax.map((element) => {
               let split = element.split('-');
               let date = format(new Date(split[0], split[1] - 1, split[2]), 'PP');
               let ans = date.slice(0, 6);
               return ans;
             });
-            setxAxis(dayMonth);
-            setyAxis(datay);
+            setchartXAxis(dayMonth);
+            setchartYAxis(datay);
           })
           .catch((error) => {
             // setxAxis(datax);
@@ -69,11 +69,11 @@ function Graph() {
   }, [search]);
 
   const data = {
-    labels: xAxis,
+    labels: chartXAxis,
     datasets: [
       {
         label: 'Stock Prices',
-        data: yAxis,
+        data: chartYAxis,
         fill: true,
         backgroundColor: '#8ab9c596',
         borderColor: '#75abeb',
@@ -97,8 +97,6 @@ function Graph() {
           </select>
           <button>search</button>
         </form>
-
-        
       </div>
       <div className='container'>
         <Line height={400} width={1000} data={data} options={{ maintainAspectRatio: false }} />
