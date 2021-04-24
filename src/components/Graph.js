@@ -166,45 +166,45 @@ function Graph() {
 
   return (
     <div className='wrapper'>
-      <div className='search-form-wrapper'>
-        <form className='search-form' onSubmit={(e) => handleSubmit(e)}>
-          {/* <input type='text' value={company} onChange={(e) => setCompany(e.target.value)} /> */}
-          <TextField
-            placeholder='Eg:facebook'
-            className={classes.textControl}
-            id='outlined-basic'
-            label='company name'
-            variant='outlined'
-            value={company}
-            onChange={(e) => setCompany(e.target.value)}
-            required
-          />
-          {/* <select name='countries' value={country} onChange={(e) => setCountry(e.target.value)}>
+      <form className='search-container' onSubmit={(e) => handleSubmit(e)}>
+        {/* <input type='text' value={company} onChange={(e) => setCompany(e.target.value)} /> */}
+        <TextField
+          placeholder='Eg:facebook'
+          className={classes.textControl}
+          id='outlined-basic'
+          label='company name'
+          variant='outlined'
+          value={company}
+          onChange={(e) => setCompany(e.target.value)}
+          required
+        />
+        {/* <select name='countries' value={country} onChange={(e) => setCountry(e.target.value)}>
             <option value='IN'>India</option>
             <option value='US'>United States</option>
           </select> */}
 
-          <FormControl className={classes.formControl}>
-            <InputLabel id='demo-simple-select-label'>Country</InputLabel>
-            <Select
-              labelId='demo-simple-select-label'
-              id='demo-simple-select'
-              value={country}
-              onChange={(e) => setCountry(e.target.value)}
-            >
-              <MenuItem value={'US'}>United States</MenuItem>
-              <MenuItem value={'IN'}>India</MenuItem>
-            </Select>
-          </FormControl>
+        <FormControl variant='outlined' className={classes.formControl}>
+          <InputLabel id='demo-simple-select-label'>Country</InputLabel>
+          <Select
+            labelId='demo-simple-select-outlined-label'
+            id='demo-simple-select-outlined'
+            value={country}
+            onChange={(e) => setCountry(e.target.value)}
+            label='Country'
+          >
+            <MenuItem value={'US'}>United States</MenuItem>
+            <MenuItem value={'IN'}>India</MenuItem>
+          </Select>
+        </FormControl>
 
-          {/* <button>search</button> */}
-          <Button type='submit' variant='contained' color='primary'>
-            search
-          </Button>
-        </form>
-      </div>
-      <div className='container'>
-        <Line height={400} width={1000} data={chartData} options={chartOptions} />
+        {/* <button>search</button> */}
+        <Button type='submit' variant='contained' color='primary'>
+          search
+        </Button>
+      </form>
+      <div className='chart-container'>
+        {/* <Line height={450} width={1000} data={chartData} options={chartOptions} /> */}
+        <Line responsive={true} data={chartData} options={chartOptions} />
       </div>
     </div>
   );
