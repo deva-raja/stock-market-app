@@ -2,9 +2,30 @@ import { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 import { format } from 'date-fns';
 import axios from 'axios';
+import { Button } from '@material-ui/core';
+import { TextField } from '@material-ui/core';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import { makeStyles } from '@material-ui/core/styles';
 const alpha = require('alphavantage')({ key: ' UEWYWI7DJJMYPQK1' });
 
+const useStyles = makeStyles((theme) => ({
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(2),
+  },
+  textControl: {
+    borderRadius: 20,
+  },
+}));
+
 function Graph() {
+  const classes = useStyles();
   const [chartXAxis, setchartXAxis] = useState([]);
   const [chartYAxis, setchartYAxis] = useState([]);
   const [company, setCompany] = useState('apple');
@@ -145,14 +166,41 @@ function Graph() {
 
   return (
     <div className='wrapper'>
-      <div className='search-form'>
-        <form onSubmit={(e) => handleSubmit(e)}>
-          <input type='text' value={company} onChange={(e) => setCompany(e.target.value)} />
-          <select name='countries' value={country} onChange={(e) => setCountry(e.target.value)}>
+      <div className='search-form-wrapper'>
+        <form className='search-form' onSubmit={(e) => handleSubmit(e)}>
+          {/* <input type='text' value={company} onChange={(e) => setCompany(e.target.value)} /> */}
+          <TextField
+            placeholder='Eg:facebook'
+            className={classes.textControl}
+            id='outlined-basic'
+            label='company name'
+            variant='outlined'
+            value={company}
+            onChange={(e) => setCompany(e.target.value)}
+            required
+          />
+          {/* <select name='countries' value={country} onChange={(e) => setCountry(e.target.value)}>
             <option value='IN'>India</option>
             <option value='US'>United States</option>
-          </select>
-          <button>search</button>
+          </select> */}
+
+          <FormControl className={classes.formControl}>
+            <InputLabel id='demo-simple-select-label'>Country</InputLabel>
+            <Select
+              labelId='demo-simple-select-label'
+              id='demo-simple-select'
+              value={country}
+              onChange={(e) => setCountry(e.target.value)}
+            >
+              <MenuItem value={'US'}>United States</MenuItem>
+              <MenuItem value={'IN'}>India</MenuItem>
+            </Select>
+          </FormControl>
+
+          {/* <button>search</button> */}
+          <Button type='submit' variant='contained' color='primary'>
+            search
+          </Button>
         </form>
       </div>
       <div className='container'>

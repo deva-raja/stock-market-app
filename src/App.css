@@ -1,14 +1,29 @@
+.App {
+  text-align: center;
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
 .container {
-  max-width: 750px;
-  max-height: 300px;
+  max-width: 950px;
+  max-height: 450px;
 }
 .wrapper {
-  display: grid;
-  place-items: center;
-  height: 100vh;
+  /* display: grid;
+  justify-content: center;
+  align-items: center;
+  height: 90vh; */
 }
-.search-form{
+.search-form {
   display: flex;
-  width: 30%;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  position: relative;
+  /* right: 30px; */
+}
+.heading {
+  color: #3f51b5;
+  font-family: Roboto;
+  position: relative;
+  top: 10px;
 }
