@@ -1,15 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Line } from 'react-chartjs-2';
-import { format } from 'date-fns';
-import axios from 'axios';
-import { Button } from '@material-ui/core';
-import { TextField } from '@material-ui/core';
+// import { format } from 'date-fns';
+// import axios from 'axios';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
-const alpha = require('alphavantage')({ key: ' UEWYWI7DJJMYPQK1' });
+// const alpha = require('alphavantage')({ key: ' UEWYWI7DJJMYPQK1' });
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -32,6 +32,9 @@ function Graph() {
   const [country, setCountry] = useState('US');
   const [search, setSearch] = useState(false);
   const [title, setTitle] = useState('');
+
+  const inputEl = useRef(null);
+  const inputEl2 = useRef(null);
 
   useEffect(() => {
     // yahoo api call
@@ -137,9 +140,9 @@ function Graph() {
     setchartXAxis(dayStock);
     setchartYAxis(datay);
     setTitle(company[0].toUpperCase() + company.slice(1));
-    // below 1 line is actual code
+    // below 2 line is actual code including [search]
     setCompany('');
-  }, [search]);
+  }, []);
 
   const chartData = {
     labels: chartXAxis,
@@ -161,7 +164,8 @@ function Graph() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    setSearch((prev) => !prev);
+    setCompany(inputEl.current.value);
+    setCountry( inputEl2.current.value );
   }
 
   return (
@@ -174,8 +178,7 @@ function Graph() {
           id='outlined-basic'
           label='company name'
           variant='outlined'
-          value={company}
-          onChange={(e) => setCompany(e.target.value)}
+          ref={inputEl}
           required
         />
         {/* <select name='countries' value={country} onChange={(e) => setCountry(e.target.value)}>
@@ -188,8 +191,7 @@ function Graph() {
           <Select
             labelId='demo-simple-select-outlined-label'
             id='demo-simple-select-outlined'
-            value={country}
-            onChange={(e) => setCountry(e.target.value)}
+            ref={inputEl2}
             label='Country'
           >
             <MenuItem value={'US'}>United States</MenuItem>
