@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Line } from 'react-chartjs-2';
-// import { format } from 'date-fns';
-// import axios from 'axios';
+import { format } from 'date-fns';
+import axios from 'axios';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import FormControl from '@material-ui/core/FormControl';
@@ -9,7 +9,7 @@ import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
-// const alpha = require('alphavantage')({ key: ' UEWYWI7DJJMYPQK1' });
+const alpha = require('alphavantage')({ key: ' UEWYWI7DJJMYPQK1' });
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -38,109 +38,64 @@ function Graph() {
 
   useEffect(() => {
     // yahoo api call
-    // const options = {
-    //   method: 'GET',
-    //   url: 'https://apidojo-yahoo-finance-v1.p.rapidapi.com/auto-complete',
-    //   params: { q: company, region: country },
-    //   headers: {
-    //     'x-rapidapi-key': 'b1cb282494msh3d6f3625ef1ad49p1b7e13jsnfdb4fdb8355b',
-    //     'x-rapidapi-host': 'apidojo-yahoo-finance-v1.p.rapidapi.com',
-    //   },
-    // };
+    const options = {
+      method: 'GET',
+      url: 'https://apidojo-yahoo-finance-v1.p.rapidapi.com/auto-complete',
+      params: { q: company, region: country },
+      headers: {
+        'x-rapidapi-key': 'b1cb282494msh3d6f3625ef1ad49p1b7e13jsnfdb4fdb8355b',
+        'x-rapidapi-host': 'apidojo-yahoo-finance-v1.p.rapidapi.com',
+      },
+    };
 
     // yahho api call
+    axios
+      .request(options)
+      .then(function (response) {
+        let data = response.data;
+        let companySymbol = data.quotes[0].symbol;
 
-    // axios
-    //   .request(options)
-    //   .then(function (response) {
-    //     let data = response.data;
-    //     let companySymbol = data.quotes[0].symbol;
+        // alpha advantage
+        // store x y coordinates
+        let xCoordinate = [];
+        let yCoordinate = [];
 
-    // alpha advantage
-    // store x y coordinates
-    // let xCoordinate = [];
-    // let yCoordinate = [];
+        alpha.data
+          .daily(`${companySymbol}`, 10)
+          .then((data) => {
+            console.log(data);
+            let array = Object.entries(data);
+            let result = array[1][1];
+            for (let key in result) {
+              xCoordinate.push(key);
+              yCoordinate.push(result[key]['1. open']);
+            }
+            // need to get latest data so reverse
+            let xreverse = xCoordinate.reverse();
+            let yreverse = yCoordinate.reverse();
+            let datax = xreverse.slice(-15);
+            let datay = yreverse.slice(-15);
 
-    // alpha.data
-    //   .daily(`${companySymbol}`, 10)
-    //   .then((data) => {
-    //     console.log(data);
-    //     let array = Object.entries(data);
-    //     let result = array[1][1];
-    //     for (let key in result) {
-    //       xCoordinate.push(key);
-    //       yCoordinate.push(result[key]['1. open']);
-    //     }
-    //     // need to get latest data so reverse
-    //     let xreverse = xCoordinate.reverse();
-    //     let yreverse = yCoordinate.reverse();
-    //     let datax = xreverse.slice(-15);
-    //     let datay = yreverse.slice(-15);
+            // for daily data
+            let dayStock = datax.map((element) => {
+              let split = element.split('-');
+              let date = format(new Date(split[0], split[1] - 1, split[2]), 'PP');
+              let ans = date.slice(0, 6);
+              return ans;
+            });
+            setchartXAxis(dayStock);
 
-    // for daily data
-    // let dayStock = datax.map((element) => {
-    //   let split = element.split('-');
-    //   let date = format(new Date(split[0], split[1] - 1, split[2]), 'PP');
-    //   let ans = date.slice(0, 6);
-    //   return ans;
-    // });
-    // setchartXAxis(dayStock);
-
-    //       setchartXAxis(dayStock);
-    //       setchartYAxis(datay);
-    //       setTitle(company[0].toUpperCase() + company.slice(1));
-    //     })
-    //     .catch((error) => {
-    //       // setxAxis(datax);
-    //       // setyAxis(datay);
-    //     });
-    // })
-    // .catch(function (error) {
-    //   console.error(error);
-    // });
-
-    // dummy data
-    let dayStock = [
-      '2021-04-05',
-      '2021-04-06',
-      '2021-04-07',
-      '2021-04-08',
-      '2021-04-09',
-      '2021-04-12',
-      '2021-04-13',
-      '2021-04-14',
-      '2021-04-15',
-      '2021-04-16',
-      '2021-04-19',
-      '2021-04-20',
-      '2021-04-21',
-      '2021-04-22',
-      '2021-04-23',
-    ];
-
-    let datay = [
-      '123.8700',
-      '126.5000',
-      '125.8300',
-      '128.9500',
-      '129.8000',
-      '132.5200',
-      '132.4400',
-      '134.9400',
-      '133.8200',
-      '134.3000',
-      '133.5100',
-      '135.0200',
-      '132.3600',
-      '133.0400',
-      '132.1600',
-    ];
-
-    // below 3 lines dummy data format
-    setchartXAxis(dayStock);
-    setchartYAxis(datay);
-    setTitle(company[0].toUpperCase() + company.slice(1));
-    // below 2 line is actual code including [search]
+            setchartXAxis(dayStock);
+            setchartYAxis(datay);
+            setTitle(company[0].toUpperCase() + company.slice(1));
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      })
+      .catch(function (error) {
+        console.error(error);
+      });
     setCompany('');
   }, []);
 
@@ -165,7 +120,7 @@ function Graph() {
   function handleSubmit(e) {
     e.preventDefault();
     setCompany(inputEl.current.value);
-    setCountry( inputEl2.current.value );
+    setCountry(inputEl2.current.value);
   }
 
   return (
