@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import axios from 'axios';
@@ -17,8 +17,8 @@ const useStyles = makeStyles((theme) => ({
     '& .MuiOutlinedInput-notchedOutline': {
       borderColor: '#4e57a0 ',
     },
-    ' & .MuiSvgIcon-root MuiSvgIcon-fontSizeSmall': {
-      backgroundColor: 'red',
+    '&:hover .MuiOutlinedInput-notchedOutline': {
+      borderColor: ' #4e57a0',
     },
   },
   clearIndicator: {
@@ -32,27 +32,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const theme = createMuiTheme({
+  palette: {
+    text: {
+      secondary: ' #4e57a0 ',
+    },
+    typography: {
+      fontFamily: ['Roboto', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"'].join(','),
+    },
+  },
+});
+
 export default function SearchComponent() {
   const classes = useStyles();
-  const theme = createMuiTheme({
-    palette: {
-      primary: {
-        main: '#4e57a0',
-        contrastText: '#191d1f',
-      },
-      secondary: {
-        main: '#4e57a0',
-        contrastText: '#191d1f',
-      },
-      text: {
-        primary: ' #4e57a0 ',
-        secondary: ' #4e57a0 ',
-      },
-      typography: {
-        fontFamily: ['Roboto', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"'].join(','),
-      },
-    },
-  });
 
   const [searchKeys, setSearchKeys] = useState();
   const [test, setTest] = useState([]);
@@ -88,18 +80,23 @@ export default function SearchComponent() {
   return (
     <div style={{ width: 500, paddingLeft: '400px', paddingTop: '200px' }}>
       <ThemeProvider theme={theme}>
-      <Autocomplete
-        id='free-solo-demo'
-        freeSolo
-        classes={classes}
-        onInput={(e) => handleSearch(e)}
-        onBlur={(e) => handleBlur(e)}
-        options={test.map((option) => `${option.symbol}, ${option.name}`)}
-        renderInput={(params) => (
-          <TextField {...params} label='Search stock symbols' margin='normal' variant='outlined' />
-        )}
-        PopperComponent={CustomPopper}
-      />
+        <Autocomplete
+          id='free-solo-demo'
+          freeSolo
+          classes={classes}
+          onInput={(e) => handleSearch(e)}
+          onBlur={(e) => handleBlur(e)}
+          options={test.map((option) => `${option.symbol}, ${option.name}`)}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label='Search stock symbols'
+              margin='normal'
+              variant='outlined'
+            />
+          )}
+          PopperComponent={CustomPopper}
+        />
       </ThemeProvider>
     </div>
   );
