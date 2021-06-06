@@ -5,7 +5,7 @@ function App() {
   return (
     <div className='App'>
       {/* <h2 className='heading'>Stock Market Tracker</h2> */}
-      <StockComponent />
+      {/* <StockComponent /> */}
     </div>
   );
 }
