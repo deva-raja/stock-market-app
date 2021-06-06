@@ -4,6 +4,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import axios from 'axios';
 import Popper from '@material-ui/core/Popper';
 import { createMuiTheme, ThemeProvider, makeStyles } from '@material-ui/core/styles';
+import { Button } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,6 +35,12 @@ const useStyles = makeStyles((theme) => ({
 
 const theme = createMuiTheme({
   palette: {
+    primary: {
+      main: '#4e57a0',
+    },
+    secondary: {
+      main: '#f44336',
+    },
     text: {
       secondary: ' #4e57a0 ',
     },
@@ -100,7 +107,9 @@ export default function AutoCompleteComponent() {
           PopperComponent={CustomPopper}
         />
       </ThemeProvider>
-      <button>searc</button>
+      <Button variant='outlined' color='primary'>
+        Primary
+      </Button>
     </div>
   );
 }
