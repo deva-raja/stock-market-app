@@ -78,7 +78,7 @@ export default function AutoCompleteComponent() {
   };
 
   return (
-    <div style={{ width: 500, paddingLeft: '400px', paddingTop: '200px' }} className='search'>
+    <div className='search'>
       <ThemeProvider theme={theme}>
         <Autocomplete
           id='free-solo-demo'
@@ -100,6 +100,7 @@ export default function AutoCompleteComponent() {
           PopperComponent={CustomPopper}
         />
       </ThemeProvider>
+      <button>searc</button>
     </div>
   );
 }
