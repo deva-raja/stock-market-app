@@ -97,7 +97,8 @@ function Graph() {
         console.error(error);
       });
     setCompany('');
-  }, []);
+    console.log(search);
+  }, [search]);
 
   const chartData = {
     labels: chartXAxis,
@@ -121,6 +122,7 @@ function Graph() {
     e.preventDefault();
     setCompany(inputEl.current.value);
     setCountry(inputEl2.current.value);
+    setSearch((state) => !state);
   }
 
   return (

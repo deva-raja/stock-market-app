@@ -1,0 +1,55 @@
+.App {
+  text-align: center;
+  display: grid;
+  gap: 50px;
+  grid-template-rows: auto 1fr;
+}
+
+.heading {
+  color: #3f51b5;
+  font-family: Roboto;
+  position: relative;
+  top: 10px;
+}
+
+/* main container */
+.wrapper {
+  padding: 50px;
+  display: grid;
+  gap: 70px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+/* 2 children of wrapper */
+.search-container {
+  grid-column: 1/-1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+}
+
+.chart-container {
+  grid-column: 1/-1;
+  height: 400px;
+}
+
+/* responsive */
+
+/* medium screens */
+@media (max-width: 600px) {
+  .wrapper {
+    padding: 0px;
+  }
+  .search-container {
+    gap: 30px;
+    margin: 0 30px;
+  }
+  .search-container > * {
+    flex-basis: 100%;
+  }
+  .chart-container {
+    margin: 0 20px;
+  }
+}
