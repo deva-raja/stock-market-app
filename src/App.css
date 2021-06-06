@@ -8,6 +8,15 @@ html {
   font-family: 'Roboto', sans-serif;
 }
 
+.App{
+  width: 100vh;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 5% 15% 80%;
+}
+
+
 .tooltip {
   border-radius: 0.25rem;
   background: #131518;
