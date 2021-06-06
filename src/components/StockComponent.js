@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ResponsiveContainer,
   AreaChart,
@@ -9,20 +9,48 @@ import {
   CartesianGrid,
 } from 'recharts';
 import { format, parseISO, subDays } from 'date-fns';
+const alpha = require('alphavantage')({ key: process.env.REACT_APP_ALPHA_API_KEY });
 
 function StockComponent() {
+  const [chartDatas, setChartDatas] = useState([]);
+  useEffect(() => {
+    // alpha advantage
+    alpha.data
+      .daily(`GOOGL`, 10)
+      .then((data) => {
+        console.log(data);
+        let array = Object.entries(data);
+        let result = array[1][1];
+
+        const chartData = [];
+
+        for (let key in result) {
+          chartData.push({
+            date: key,
+            value: result[key]['1. open'],
+          });
+        }
+        const slicedData = chartData.slice(0, 31);
+        setChartDatas(slicedData);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
   const data = [];
   for (let num = 30; num >= 0; num--) {
     data.push({
-      date: subDays(new Date(), num).toISOString().substr(0, 10),
       value: 1 + Math.random(),
+      date: subDays(new Date(), num).toISOString().substr(0, 10),
     });
   }
 
+  console.log({ chartDatas });
   return (
     <div style={{ marginTop: '200px' }}>
       <ResponsiveContainer width='100%' height={400}>
-        <AreaChart data={data}>
+        <AreaChart data={chartDatas}>
           <defs>
             <linearGradient id='bull' x1='0' y1='0' x2='0' y2='1'>
               <stop offset='0%' stopColor='#4e57a0 ' stopOpacity={0.8} />
@@ -65,7 +93,6 @@ function StockComponent() {
 }
 
 function CustomTooltip({ active, payload, label }) {
-  console.log(payload);
   if (active) {
     return (
       <div className='tooltip'>
@@ -74,13 +101,6 @@ function CustomTooltip({ active, payload, label }) {
         <p>₹{(payload[0].value * 73.15).toFixed(2)} INR</p>
       </div>
     );
-  }
-  return null;
-}
-
-function CustomizedCursor({ active, payload, label }) {
-  if (active) {
-    return <div className='cursor'></div>;
   }
   return null;
 }

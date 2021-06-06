@@ -9,7 +9,7 @@ import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
-const alpha = require('alphavantage')({ key: ' UEWYWI7DJJMYPQK1' });
+const alpha = require('alphavantage')({ key: process.env.REACT_APP_ALPHA_API_KEY });
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
