@@ -50,7 +50,7 @@ const theme = createMuiTheme({
   },
 });
 
-export default function AutoCompleteComponent({ setCompanyStockSymbol }) {
+export default function AutoCompleteComponent({ setCompanyStock }) {
   const classes = useStyles();
   const autoCompleteRef = useRef(null);
 
@@ -68,8 +68,9 @@ export default function AutoCompleteComponent({ setCompanyStockSymbol }) {
     if (selectedValues === null || selectedValues === undefined) {
       try {
         const response = await axios.get(`https://ticker-2e1ica8b9.now.sh/keyword/${typedValues}`);
-        console.log(response.data[0].symbol, 'typed stock');
-        return setCompanyStockSymbol(response.data[0].symbol);
+        console.log(response.data[0], 'typed stock');
+        const data = response.data[0];
+        setCompanyStock({ stock: data.symbol, company: data.name });
       } catch (e) {
         setError(true);
       }
@@ -78,9 +79,12 @@ export default function AutoCompleteComponent({ setCompanyStockSymbol }) {
     //selected input,with drop box
     try {
       const symbol = selectedValues.split(', ').slice(0);
+      const companyName = selectedValues.split(', ').slice(1);
       const stockSymbol = symbol[0];
+      const stockCompany = companyName[0];
+
       console.log(stockSymbol, 'drop down stock');
-      return setCompanyStockSymbol(stockSymbol);
+      return setCompanyStock({ stock: stockSymbol, company: stockCompany });
     } catch (e) {
       console.log(e);
     }

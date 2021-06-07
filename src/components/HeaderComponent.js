@@ -1,16 +1,16 @@
 import React from 'react';
-import Drawer from '@material-ui/core/Drawer';
-import { makeStyles } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 
-function HeaderComponent({ setCompanyStockSymbol }) {
+function HeaderComponent({  setCompanyStock }) {
   const handleClick = (e) => {
     const innerText = e.target.innerText;
     const symbol = innerText.split(', ').slice(0);
+    const companyName = innerText.split(', ').slice(1);
     const stockSymbol = symbol[0];
+    const stockCompany = companyName[0];
     console.log(stockSymbol);
-    setCompanyStockSymbol(stockSymbol);
+    setCompanyStock({stock:stockSymbol,company:stockCompany});
   };
 
   return (

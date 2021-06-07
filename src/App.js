@@ -5,12 +5,12 @@ import HeaderComponent from './components/HeaderComponent';
 import StockComponent from './components/StockComponent';
 
 function App() {
-  const [companyStockSymbol, setCompanyStockSymbol] = useState('');
+  const [companyStock, setCompanyStock] = useState('');
   return (
     <div className='App'>
-      <HeaderComponent setCompanyStockSymbol={setCompanyStockSymbol} />
-      <AutoCompleteComponent setCompanyStockSymbol={setCompanyStockSymbol} />
-      <StockComponent companyStockSymbol={companyStockSymbol} />
+      <HeaderComponent setCompanyStockSymbol={setCompanyStock} />
+      <AutoCompleteComponent setCompanyStockSymbol={setCompanyStock} />
+      <StockComponent companyStockSymbol={companyStock} />
     </div>
   );
 }

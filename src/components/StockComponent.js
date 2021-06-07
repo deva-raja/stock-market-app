@@ -13,10 +13,11 @@ const alpha = require('alphavantage')({ key: process.env.REACT_APP_ALPHA_API_KEY
 
 function StockComponent({ companyStockSymbol }) {
   const [chartDatas, setChartDatas] = useState([]);
+  const [companyStocks, setCompanyStocks] = useState();
 
   useEffect(() => {
     // app start no symbol so random data
-    if (companyStockSymbol === '') {
+    if (companyStockSymbol.stock === '') {
       const data = [];
       for (let num = 30; num >= 0; num--) {
         data.push({
