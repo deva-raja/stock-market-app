@@ -11,6 +11,12 @@ const useStyles = makeStyles((theme) => ({
     '& .MuiFormLabel-root': {
       color: '#4e57a0',
     },
+    error:{
+    '& .MuiFormLabel-root': {
+      color: '#4e57a0',
+    },
+
+    }
   },
   inputRoot: {
     color: '#4e57a0',
@@ -36,6 +42,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const theme = createMuiTheme({
+  //   palette: {
+  //   error: {
+  //     // main: "#fff"
+  //   }
+  // },
   primary: {
     main: '#4e57a0',
   },

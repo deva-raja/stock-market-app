@@ -5,6 +5,7 @@ import HeaderComponent from './components/HeaderComponent';
 import StockComponent from './components/StockComponent';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ShowStockComponent from './components/ShowStockComponent';
 
 function App() {
   const [companyStock, setCompanyStock] = useState({ stock: '', company: '' });
@@ -28,6 +29,7 @@ function App() {
   return (
     <div className='App'>
       <HeaderComponent setCompanyStock={setCompanyStock} disableBtn={disableBtn}/>
+      <ShowStockComponent companyStock={companyStock}/> 
       <AutoCompleteComponent setCompanyStock={setCompanyStock} disableBtn={disableBtn}/>
       <StockComponent companyStock={companyStock} setLimitReached={setLimitReached} setDisableBtn={setDisableBtn}/>
       <ToastContainer />
