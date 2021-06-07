@@ -11,7 +11,7 @@ import {
 import { format, parseISO, subDays } from 'date-fns';
 const alpha = require('alphavantage')({ key: process.env.REACT_APP_ALPHA_API_KEY });
 
-function StockComponent(companyStockSymbol) {
+function StockComponent({ companyStockSymbol }) {
   const [chartDatas, setChartDatas] = useState([]);
 
   useEffect(() => {
@@ -54,49 +54,47 @@ function StockComponent(companyStockSymbol) {
   return (
     <div className='graph'>
       {chartDatas.length !== 0 && (
-      <ResponsiveContainer width='93%' height='88%'>
-        {companyStockSymbol}
-        <AreaChart data={chartDatas}>
-          <defs>
-            <linearGradient id='bull' x1='0' y1='0' x2='0' y2='1'>
-              <stop offset='0%' stopColor='#4e57a0 ' stopOpacity={0.8} />
-              <stop offset='65%' stopColor='#4e57a0 ' stopOpacity={0.2} />
-              <stop offset='90%' stopColor='#4e57a0 ' stopOpacity={0.1} />
-            </linearGradient>
-          </defs>
-          <Area dataKey='value' stroke='#5863bd' fill='url(#bull)' />
-          <XAxis
-            dataKey='date'
-            axisLine={false}
-            tickLine={false}
-            tickCount={6}
-            tickFormatter={(str) => {
-              const date = parseISO(str);
+        <ResponsiveContainer width='93%' height='88%'>
+          <AreaChart data={chartDatas}>
+            <defs>
+              <linearGradient id='bull' x1='0' y1='0' x2='0' y2='1'>
+                <stop offset='0%' stopColor='#4e57a0 ' stopOpacity={0.8} />
+                <stop offset='65%' stopColor='#4e57a0 ' stopOpacity={0.2} />
+                <stop offset='90%' stopColor='#4e57a0 ' stopOpacity={0.1} />
+              </linearGradient>
+            </defs>
+            <Area dataKey='value' stroke='#5863bd' fill='url(#bull)' />
+            <XAxis
+              dataKey='date'
+              axisLine={false}
+              tickLine={false}
+              tickCount={6}
+              tickFormatter={(str) => {
+                const date = parseISO(str);
 
-              //   for showing todays stock
-              const today = new Date();
-              const isToday = Number(format(today, 'd'));
+                //   for showing todays stock
+                const today = new Date();
+                const isToday = Number(format(today, 'd'));
 
-              if (date.getDate() === isToday || date.getDate() % 3 === 0) {
-                return format(date, 'MMM, d');
-              }
-              return '';
-            }}
-          />
-          <YAxis
-            datakey='value'
-            axisLine={false}
-            tickLine={false}
-            tickCount={6}
-            tickFormatter={(number) => `$${number.toFixed(2)}`}
-          />
+                if (date.getDate() === isToday || date.getDate() % 3 === 0) {
+                  return format(date, 'MMM, d');
+                }
+                return '';
+              }}
+            />
+            <YAxis
+              datakey='value'
+              axisLine={false}
+              tickLine={false}
+              tickCount={6}
+              tickFormatter={(number) => `$${number.toFixed(2)}`}
+            />
 
-          <Tooltip content={<CustomTooltip />} />
-          <CartesianGrid opacity={0.1} vertical={false} />
-        </AreaChart>
-      </ResponsiveContainer>
-      )
-      }
+            <Tooltip content={<CustomTooltip />} />
+            <CartesianGrid opacity={0.1} vertical={false} />
+          </AreaChart>
+        </ResponsiveContainer>
+      )}
     </div>
   );
 }

@@ -50,7 +50,7 @@ const theme = createMuiTheme({
   },
 });
 
-export default function AutoCompleteComponent(setCompanyStockSymbol) {
+export default function AutoCompleteComponent({ setCompanyStockSymbol }) {
   const classes = useStyles();
   const autoCompleteRef = useRef(null);
 

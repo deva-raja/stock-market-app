@@ -5,7 +5,7 @@ import HeaderComponent from './components/HeaderComponent';
 import StockComponent from './components/StockComponent';
 
 function App() {
-  const [companyStockSymbol, setCompanyStockSymbol] = useState(null);
+  const [companyStockSymbol, setCompanyStockSymbol] = useState('');
   return (
     <div className='App'>
       <HeaderComponent setCompanyStockSymbol={setCompanyStockSymbol} />
