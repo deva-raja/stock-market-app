@@ -35,6 +35,11 @@ const useStyles = makeStyles((theme) => ({
 
 const theme = createMuiTheme({
   palette: {
+    action: {
+      disabledBackground:'#191d1f',
+      disabled: '#4e57a0',
+    },
+  },
     primary: {
       main: '#4e57a0',
     },
@@ -48,9 +53,9 @@ const theme = createMuiTheme({
       fontFamily: ['Roboto', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"'].join(','),
     },
   },
-});
+);
 
-export default function AutoCompleteComponent({ setCompanyStock }) {
+export default function AutoCompleteComponent({ setCompanyStock, disableBtn }) {
   const classes = useStyles();
   const autoCompleteRef = useRef(null);
 
@@ -158,6 +163,7 @@ export default function AutoCompleteComponent({ setCompanyStock }) {
           <Button
             variant='outlined'
             color='primary'
+            disabled={disableBtn}
             onClick={handleSubmit}
             style={{
               height: '55px',

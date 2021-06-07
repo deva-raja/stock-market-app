@@ -11,13 +11,14 @@ import {
 import { format, parseISO, subDays } from 'date-fns';
 const alpha = require('alphavantage')({ key: process.env.REACT_APP_ALPHA_API_KEY });
 
-function StockComponent({ companyStockSymbol }) {
+function StockComponent({ companyStock, setLimitReached, setDisableBtn }) {
   const [chartDatas, setChartDatas] = useState([]);
-  const [companyStocks, setCompanyStocks] = useState();
+  const [companyStocks, setCompanyStocks] = useState(companyStock.stock);
 
   useEffect(() => {
+    setCompanyStocks(companyStock.stock);
     // app start no symbol so random data
-    if (companyStockSymbol.stock === '') {
+    if (companyStocks === '') {
       const data = [];
       for (let num = 30; num >= 0; num--) {
         data.push({
@@ -28,8 +29,11 @@ function StockComponent({ companyStockSymbol }) {
       setChartDatas(data);
     } else {
       // gets stock symbol so alpha advantage
+
+      // disable buttons before api call
+      setDisableBtn(true);
       alpha.data
-        .daily(`${companyStockSymbol}`, 10)
+        .daily(`${companyStocks}`, 10)
         .then((data) => {
           let array = Object.entries(data);
           let result = array[1][1];
@@ -45,12 +49,19 @@ function StockComponent({ companyStockSymbol }) {
           const slicedData = chartData.slice(0, 31);
           const latestData = slicedData.reverse();
           setChartDatas(latestData);
+          setDisableBtn(false);
         })
         .catch((error) => {
-          console.log(error);
+          const errorMsg = error;
+          setDisableBtn(false);
+            return (errorMsg.includes(
+              ' Our standard API call frequency is 5 calls per minute and 500 calls per day'
+            )
+              ? setLimitReached(true) //toast saying limit reached
+              : '');
         });
     }
-  }, [companyStockSymbol]);
+  }, [companyStocks.stock, companyStock, companyStocks, setLimitReached, setDisableBtn]);
 
   return (
     <div className='graph'>
