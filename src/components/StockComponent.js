@@ -45,12 +45,12 @@ function StockComponent() {
       date: subDays(new Date(), num).toISOString().substr(0, 10),
       value: 50 + Math.floor(Math.random() * 60),
     });
-  } 
+  }
 
   return (
     <div className='graph'>
       {/* {chartDatas.length !== 0 && ( */}
-      <ResponsiveContainer width='93%' height='80%'>
+      <ResponsiveContainer width='93%' height='88%'>
         {/* <AreaChart data={chartDatas}> */}
         <AreaChart data={data}>
           <defs>

@@ -15,10 +15,18 @@ html {
   grid-template-rows: 10% 15% 75%;
   justify-content: center;
 }
+
+/* header section start */
 .header {
   grid-row: 1/2;
   grid-column: 1/2;
+  display: flex;
 }
+.header > * {
+  flex: 1;
+}
+
+/* header section end */
 
 /* search section begins */
 .search-container {

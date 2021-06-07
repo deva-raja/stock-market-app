@@ -5,7 +5,6 @@ import axios from 'axios';
 import Popper from '@material-ui/core/Popper';
 import { createMuiTheme, ThemeProvider, makeStyles } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
-import FormHelperText from '@material-ui/core/FormHelperText';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,13 +31,6 @@ const useStyles = makeStyles((theme) => ({
       background: '#1e1f20',
     },
   },
-  helperText: {
-    color: '#dc143c',
-    fontSize: '13px',
-    textTransform: 'uppercase',
-    // marginTop:'8px',
-    postition: 'absolute !important',
-  },
 }));
 
 const theme = createMuiTheme({
@@ -59,18 +51,18 @@ const theme = createMuiTheme({
 });
 
 export default function AutoCompleteComponent() {
+  const classes = useStyles();
+  const [searchKeys, setSearchKeys] = useState();
+  const [test, setTest] = useState([]);
+  const [error, setError] = useState(false);
+
+  // autocomplete functions
   const handleSubmit = () => {
     setError(true);
   };
   const handleFocus = () => {
     setError(false);
   };
-
-  const classes = useStyles();
-
-  const [searchKeys, setSearchKeys] = useState();
-  const [test, setTest] = useState([]);
-  const [error, setError] = useState(false);
 
   const handleSearch = async (e) => {
     if (e.target.value === '') {
