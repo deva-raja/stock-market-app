@@ -50,7 +50,7 @@ const theme = createMuiTheme({
   },
 });
 
-export default function AutoCompleteComponent() {
+export default function AutoCompleteComponent(setCompanyStockSymbol) {
   const classes = useStyles();
   const autoCompleteRef = useRef(null);
 
@@ -63,28 +63,27 @@ export default function AutoCompleteComponent() {
   const [selectedValues, setSelectedValues] = useState();
 
   // autocomplete functions
-  const handleSubmit = async() => {
+  const handleSubmit = async () => {
     // normal typed input,without drop box
-    if(selectedValues === null || selectedValues === undefined){
-      try{
+    if (selectedValues === null || selectedValues === undefined) {
+      try {
         const response = await axios.get(`https://ticker-2e1ica8b9.now.sh/keyword/${typedValues}`);
-        console.log(response.data[0].symbol,"typed stock");
-        return (response.data[0].symbol);
-      }
-      catch(e){
+        console.log(response.data[0].symbol, 'typed stock');
+        return setCompanyStockSymbol(response.data[0].symbol);
+      } catch (e) {
         setError(true);
       }
     }
 
     //selected input,with drop box
-    try{
+    try {
       const symbol = selectedValues.split(', ').slice(0);
       const stockSymbol = symbol[0];
-      console.log(stockSymbol,'drop down stock');
-    }catch(e){
+      console.log(stockSymbol, 'drop down stock');
+      return setCompanyStockSymbol(stockSymbol);
+    } catch (e) {
       console.log(e);
     }
-
   };
 
   const handleChange = (e, value) => {

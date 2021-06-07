@@ -4,12 +4,13 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 
-function HeaderComponent() {
+function HeaderComponent({ setCompanyStockSymbol }) {
   const handleClick = (e) => {
     const innerText = e.target.innerText;
     const symbol = innerText.split(', ').slice(0);
     const stockSymbol = symbol[0];
     console.log(stockSymbol);
+    setCompanyStockSymbol(stockSymbol);
   };
 
   return (

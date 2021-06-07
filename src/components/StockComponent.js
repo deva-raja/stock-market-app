@@ -11,48 +11,52 @@ import {
 import { format, parseISO, subDays } from 'date-fns';
 const alpha = require('alphavantage')({ key: process.env.REACT_APP_ALPHA_API_KEY });
 
-function StockComponent() {
+function StockComponent(companyStockSymbol) {
   const [chartDatas, setChartDatas] = useState([]);
 
-  // useEffect(() => {
-  //   // alpha advantage
-  //   alpha.data
-  //     .daily(`FB`, 10)
-  //     .then((data) => {
-  //       let array = Object.entries(data);
-  //       let result = array[1][1];
+  useEffect(() => {
+    // app start no symbol so random data
+    if (companyStockSymbol === '') {
+      const data = [];
+      for (let num = 30; num >= 0; num--) {
+        data.push({
+          date: subDays(new Date(), num).toISOString().substr(0, 10),
+          value: 50 + Math.floor(Math.random() * 60),
+        });
+      }
+      setChartDatas(data);
+    } else {
+      // gets stock symbol so alpha advantage
+      alpha.data
+        .daily(`${companyStockSymbol}`, 10)
+        .then((data) => {
+          let array = Object.entries(data);
+          let result = array[1][1];
 
-  //       const chartData = [];
+          const chartData = [];
 
-  //       for (let key in result) {
-  //         chartData.push({
-  //           date: key,
-  //           value: result[key]['1. open'],
-  //         });
-  //       }
-  //       const slicedData = chartData.slice(0, 31);
-  //       const latestData = slicedData.reverse();
-  //       setChartDatas(latestData);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // }, []);
-
-  const data = [];
-  for (let num = 30; num >= 0; num--) {
-    data.push({
-      date: subDays(new Date(), num).toISOString().substr(0, 10),
-      value: 50 + Math.floor(Math.random() * 60),
-    });
-  }
+          for (let key in result) {
+            chartData.push({
+              date: key,
+              value: result[key]['1. open'],
+            });
+          }
+          const slicedData = chartData.slice(0, 31);
+          const latestData = slicedData.reverse();
+          setChartDatas(latestData);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [companyStockSymbol]);
 
   return (
     <div className='graph'>
-      {/* {chartDatas.length !== 0 && ( */}
+      {chartDatas.length !== 0 && (
       <ResponsiveContainer width='93%' height='88%'>
-        {/* <AreaChart data={chartDatas}> */}
-        <AreaChart data={data}>
+        {companyStockSymbol}
+        <AreaChart data={chartDatas}>
           <defs>
             <linearGradient id='bull' x1='0' y1='0' x2='0' y2='1'>
               <stop offset='0%' stopColor='#4e57a0 ' stopOpacity={0.8} />
@@ -60,7 +64,6 @@ function StockComponent() {
               <stop offset='90%' stopColor='#4e57a0 ' stopOpacity={0.1} />
             </linearGradient>
           </defs>
-          {/* <Area dataKey='value' stroke='#6169a3' fill='url(#bull)' /> */}
           <Area dataKey='value' stroke='#5863bd' fill='url(#bull)' />
           <XAxis
             dataKey='date'
@@ -92,8 +95,8 @@ function StockComponent() {
           <CartesianGrid opacity={0.1} vertical={false} />
         </AreaChart>
       </ResponsiveContainer>
-      ){/* prettier-ignore */}
-      {/* } */}
+      )
+      }
     </div>
   );
 }
