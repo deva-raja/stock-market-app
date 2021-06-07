@@ -4,11 +4,13 @@ import { createMuiTheme, makeStyles, ThemeProvider } from '@material-ui/core/sty
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import axios from 'axios';
-import React, {  useState } from 'react';
+import React, { useState } from 'react';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    color: '#4e57a0 ',
+    '& .MuiFormLabel-root': {
+      color: '#4e57a0',
+    },
   },
   inputRoot: {
     color: '#4e57a0',
@@ -41,7 +43,6 @@ const theme = createMuiTheme({
     main: '#f44336',
   },
   text: {
-    primary: ' #4e57a0 ',
     secondary: ' #4e57a0 ',
   },
   typography: {
