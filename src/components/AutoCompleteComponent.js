@@ -1,14 +1,14 @@
-import React, { useState, useRef } from 'react';
+import { Button } from '@material-ui/core';
+import Popper from '@material-ui/core/Popper';
+import { createMuiTheme, makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import axios from 'axios';
-import Popper from '@material-ui/core/Popper';
-import { createMuiTheme, ThemeProvider, makeStyles } from '@material-ui/core/styles';
-import { Button } from '@material-ui/core';
+import React, {  useState } from 'react';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    color: '#4e57a0',
+    color: '#4e57a0 ',
   },
   inputRoot: {
     color: '#4e57a0',
@@ -34,30 +34,35 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const theme = createMuiTheme({
+  primary: {
+    main: '#4e57a0',
+  },
+  secondary: {
+    main: '#f44336',
+  },
+  text: {
+    primary: ' #4e57a0 ',
+    secondary: ' #4e57a0 ',
+  },
+  typography: {
+    fontFamily: ['Roboto', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"'].join(','),
+  },
+});
+
+const Errortheme = createMuiTheme({
   palette: {
     action: {
-      disabledBackground:'#191d1f',
+      disabledBackground: '#191d1f',
       disabled: '#4e57a0',
     },
   },
-    primary: {
-      main: '#4e57a0',
-    },
-    secondary: {
-      main: '#f44336',
-    },
-    text: {
-      secondary: ' #4e57a0 ',
-    },
-    typography: {
-      fontFamily: ['Roboto', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"'].join(','),
-    },
+  typography: {
+    fontFamily: ['Roboto', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"'].join(','),
   },
-);
+});
 
 export default function AutoCompleteComponent({ setCompanyStock, disableBtn }) {
   const classes = useStyles();
-  const autoCompleteRef = useRef(null);
 
   const [stockArray, setStockArray] = useState([]);
   const [error, setError] = useState(false);
@@ -136,7 +141,6 @@ export default function AutoCompleteComponent({ setCompanyStock, disableBtn }) {
       <ThemeProvider theme={theme}>
         <div className='auto-complete'>
           <Autocomplete
-            ref={autoCompleteRef}
             id='free-solo-demo'
             freeSolo
             classes={classes}
@@ -159,6 +163,8 @@ export default function AutoCompleteComponent({ setCompanyStock, disableBtn }) {
             PopperComponent={CustomPopper}
           />
         </div>
+      </ThemeProvider>
+      <ThemeProvider theme={Errortheme}>
         <div className='search-btn'>
           <Button
             variant='outlined'

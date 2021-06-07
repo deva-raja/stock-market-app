@@ -4,7 +4,7 @@ import ButtonGroup from '@material-ui/core/ButtonGroup';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 
 function HeaderComponent({ setCompanyStock, disableBtn }) {
-  const theme = createMuiTheme({
+  const Btntheme = createMuiTheme({
     palette: {
       action: {
         disabledBackground: '#191d1f',
@@ -25,7 +25,7 @@ function HeaderComponent({ setCompanyStock, disableBtn }) {
 
   return (
     <div className='header'>
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={Btntheme}>
         <ButtonGroup
           className='header'
           style={{ width: '100%', height: '65%' }}
