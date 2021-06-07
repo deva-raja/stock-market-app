@@ -5,6 +5,7 @@ import axios from 'axios';
 import Popper from '@material-ui/core/Popper';
 import { createMuiTheme, ThemeProvider, makeStyles } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
+import FormHelperText from '@material-ui/core/FormHelperText';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,6 +32,13 @@ const useStyles = makeStyles((theme) => ({
       background: '#1e1f20',
     },
   },
+  helperText: {
+    color: '#dc143c',
+    fontSize: '13px',
+    textTransform: 'uppercase',
+    // marginTop:'8px',
+    postition: 'absolute !important',
+  },
 }));
 
 const theme = createMuiTheme({
@@ -51,10 +59,18 @@ const theme = createMuiTheme({
 });
 
 export default function AutoCompleteComponent() {
+  const handleSubmit = () => {
+    setError(true);
+  };
+  const handleFocus = () => {
+    setError(false);
+  };
+
   const classes = useStyles();
 
   const [searchKeys, setSearchKeys] = useState();
   const [test, setTest] = useState([]);
+  const [error, setError] = useState(false);
 
   const handleSearch = async (e) => {
     if (e.target.value === '') {
@@ -85,31 +101,48 @@ export default function AutoCompleteComponent() {
   };
 
   return (
-    <div className='search'>
+    <div className='search-container'>
       <ThemeProvider theme={theme}>
-        <Autocomplete
-          id='free-solo-demo'
-          freeSolo
-          classes={classes}
-          onInput={(e) => handleSearch(e)}
-          onBlur={(e) => handleBlur(e)}
-          options={test.map((option) => `${option.symbol}, ${option.name}`)}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label='Search stock symbols'
-              margin='normal'
-              variant='outlined'
-              placeholder='Try APPL for APPLE INC'
-              multiline
-            />
-          )}
-          PopperComponent={CustomPopper}
-        />
+        <div className='auto-complete'>
+          <Autocomplete
+            id='free-solo-demo'
+            freeSolo
+            classes={classes}
+            onFocus={handleFocus}
+            onInput={(e) => handleSearch(e)}
+            onBlur={(e) => handleBlur(e)}
+            options={test.map((option) => `${option.symbol}, ${option.name}`)}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                margin='normal'
+                label={error ? 'Enter valid stock symbol ' : 'Search stock symbols'}
+                error={error}
+                variant='outlined'
+                placeholder='Try APPL for APPLE INC'
+                multiline
+              />
+            )}
+            PopperComponent={CustomPopper}
+          />
+        </div>
+        <div className='search-btn'>
+          <Button
+            variant='outlined'
+            color='primary'
+            onClick={handleSubmit}
+            style={{
+              height: '55px',
+              width: '90%',
+              position: 'relative',
+              top: '3.5px',
+              fontSize: '17px',
+            }}
+          >
+            SEARCH
+          </Button>
+        </div>
       </ThemeProvider>
-      <Button variant='outlined' color='primary'>
-        Primary
-      </Button>
     </div>
   );
 }
