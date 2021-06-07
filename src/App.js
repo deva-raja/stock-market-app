@@ -4,6 +4,7 @@ import HeaderComponent from './components/HeaderComponent';
 import StockComponent from './components/StockComponent';
 
 function App() {
+  
   return (
     <div className='App'>
       <HeaderComponent/>

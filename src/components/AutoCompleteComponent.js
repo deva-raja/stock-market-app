@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import axios from 'axios';
@@ -52,39 +52,70 @@ const theme = createMuiTheme({
 
 export default function AutoCompleteComponent() {
   const classes = useStyles();
-  const [searchKeys, setSearchKeys] = useState();
-  const [test, setTest] = useState([]);
+  const autoCompleteRef = useRef(null);
+
+  const [stockArray, setStockArray] = useState([]);
   const [error, setError] = useState(false);
 
+  // typed value from autocomplete
+  const [typedValues, setTypedValues] = useState();
+  // selected from drop down
+  const [selectedValues, setSelectedValues] = useState();
+
   // autocomplete functions
-  const handleSubmit = () => {
-    setError(true);
+  const handleSubmit = async() => {
+    // normal typed input,without drop box
+    if(selectedValues === null || selectedValues === undefined){
+      try{
+        const response = await axios.get(`https://ticker-2e1ica8b9.now.sh/keyword/${typedValues}`);
+        console.log(response.data[0].symbol,"typed stock");
+        return (response.data[0].symbol);
+      }
+      catch(e){
+        setError(true);
+      }
+    }
+
+    //selected input,with drop box
+    try{
+      const symbol = selectedValues.split(', ').slice(0);
+      const stockSymbol = symbol[0];
+      console.log(stockSymbol,'drop down stock');
+    }catch(e){
+      console.log(e);
+    }
+
   };
+
+  const handleChange = (e, value) => {
+    setSelectedValues(value);
+  };
+
   const handleFocus = () => {
     setError(false);
   };
 
   const handleSearch = async (e) => {
     if (e.target.value === '') {
-      setTest([]);
+      setStockArray([]);
       return;
     }
 
-    setSearchKeys(e.target.value);
+    setTypedValues(e.target.value);
     try {
-      const response = await axios.get(`https://ticker-2e1ica8b9.now.sh/keyword/${searchKeys}`);
+      const response = await axios.get(`https://ticker-2e1ica8b9.now.sh/keyword/${typedValues}`);
       const stockData = response.data;
       const FlatArray = [].concat(...stockData);
-      setTest(FlatArray);
+      setStockArray(FlatArray);
     } catch (e) {
       console.log(e);
-      setTest((state) => state);
+      setStockArray((state) => state);
     }
   };
 
   const handleBlur = (e) => {
     if (e.target.value === '') {
-      setTest([]);
+      setStockArray([]);
     }
   };
 
@@ -97,13 +128,15 @@ export default function AutoCompleteComponent() {
       <ThemeProvider theme={theme}>
         <div className='auto-complete'>
           <Autocomplete
+            ref={autoCompleteRef}
             id='free-solo-demo'
             freeSolo
             classes={classes}
             onFocus={handleFocus}
             onInput={(e) => handleSearch(e)}
+            onChange={(e, value) => handleChange(e, value)}
             onBlur={(e) => handleBlur(e)}
-            options={test.map((option) => `${option.symbol}, ${option.name}`)}
+            options={stockArray.map((option) => `${option.symbol}, ${option.name}`)}
             renderInput={(params) => (
               <TextField
                 {...params}
